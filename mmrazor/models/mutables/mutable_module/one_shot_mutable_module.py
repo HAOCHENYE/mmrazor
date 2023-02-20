@@ -199,7 +199,10 @@ class OneShotMutableOP(OneShotMutableModule[str, str]):
             assert name not in ops
             if module_kwargs is not None:
                 op_cfg.update(module_kwargs)
-            ops[name] = MODELS.build(op_cfg)
+            if isinstance(op_cfg, dict):
+                ops[name] = MODELS.build(op_cfg)
+            else:
+                ops[name] = op_cfg.build()
         return ops
 
     def forward_fixed(self, x: Any) -> Tensor:
