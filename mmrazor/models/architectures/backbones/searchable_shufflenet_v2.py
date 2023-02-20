@@ -160,7 +160,10 @@ class SearchableShuffleNetV2(BaseBackbone):
                     in_channels=self.in_channels,
                     out_channels=out_channels,
                     stride=stride))
-            layers.append(MODELS.build(mutable_cfg))
+            if isinstance(mutable_cfg, dict):
+                layers.append(MODELS.build(mutable_cfg))
+            else:
+                layers.append(mutable_cfg.build())
             self.in_channels = out_channels
 
         return Sequential(*layers)
